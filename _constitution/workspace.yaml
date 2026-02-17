@@ -1,0 +1,125 @@
+version: 2
+name: LosslessCut
+parent: restai
+depth: 1
+modules:
+- id: governance
+  paths:
+  - _constitution/
+  - README.md
+- id: frontend
+  paths:
+  - src/
+  - public/
+model_routing:
+  tiers:
+    S:
+      model_id: auto:best_local
+      context_budget: 4000
+      max_turns: 8
+      max_tool_calls: 20
+      temperature: 0.3
+      fallback_model_id: null
+    M:
+      model_id: claude_relay:claude-opus-4-6
+      context_budget: 12000
+      max_turns: 16
+      max_tool_calls: 40
+      temperature: 0.3
+      fallback_model_id: auto:best_local
+    L:
+      model_id: claude_relay:claude-opus-4-6
+      context_budget: 16000
+      max_turns: 20
+      max_tool_calls: 50
+      temperature: 0.3
+      fallback_model_id: auto:best_local
+  relay_enabled: true
+  relay_allowed_tiers:
+  - M
+  - L
+  escalation_enabled: true
+  escalation_threshold: 0.5
+  escalation_min_runs: 4
+  cognitive: null
+default_pipeline: null
+workflows: null
+vision: |
+  The swiss army knife of lossless video/audio editing.
+  Cross-platform Electron + React + TypeScript app built on FFmpeg.
+  Source: https://github.com/mifi/lossless-cut
+  License: GPL-2.0
+state:
+  phase: idle
+  health: green
+  active_item: null
+  active_neurons: {}
+  last_updated: '2026-02-17T00:00:00'
+  risks: []
+  direction: null
+  notes: null
+queue:
+- id: explore-codebase
+  title: Explore LosslessCut codebase
+  status: pending
+  size: S
+  criteria:
+  - text: Read README and understand project purpose
+    done: false
+  - text: Map directory structure and identify key files
+    done: false
+  - text: Identify entry points, architecture patterns, and tech stack
+    done: false
+  tags: [onboarding]
+  description: Initial codebase exploration to understand project structure, conventions,
+    and key components.
+  neuron_scope: null
+  llm_validation: null
+  pipeline: null
+  pr: null
+  completed_date: null
+  completed_summary: null
+- id: run-existing-tests
+  title: Run existing test suite
+  status: pending
+  size: S
+  depends: [explore-codebase]
+  criteria:
+  - text: Identify test framework and test file locations
+    done: false
+  - text: Install dependencies and run test suite
+    done: false
+  - text: Record baseline results in TESTING.md
+    done: false
+  tags: [onboarding, testing]
+  description: Establish test baseline by identifying the test framework, running the
+    suite, and recording pass/fail counts.
+  neuron_scope: null
+  llm_validation: null
+  pipeline: null
+  pr: null
+  completed_date: null
+  completed_summary: null
+- id: assess-code-quality
+  title: Assess code quality and improvement opportunities
+  status: pending
+  size: M
+  depends: [explore-codebase]
+  criteria:
+  - text: Run linter/formatter and record issues
+    done: false
+  - text: Check for outdated dependencies
+    done: false
+  - text: Identify areas needing improvement or refactoring
+    done: false
+  tags: [onboarding, quality]
+  description: Evaluate code health — lint errors, outdated deps, tech debt, and improvement
+    opportunities.
+  neuron_scope: null
+  llm_validation: null
+  pipeline: null
+  pr: null
+  completed_date: null
+  completed_summary: null
+completed: []
+completed_ids: []

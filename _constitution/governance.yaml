@@ -1,0 +1,6 @@
+version: 1
+policies: []
+circuit_breaker:
+  enabled: true
+  max_consecutive_failures: 3
+budgets: {}
