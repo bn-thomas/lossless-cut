@@ -13,4 +13,5 @@ The swiss army knife of lossless video/audio editing. Cross-platform Electron de
 - **Onboarded:** 2026-02-17
 
 ## Upstream
-Git remote `upstream` points to the source repository for pulling updates.
+Git remote `upstream` points to the source repository for reference.
+Fresh repo — upstream history was not imported. Use upstream remote for cherry-picks or diffs against source.
