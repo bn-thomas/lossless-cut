@@ -8,7 +8,9 @@ import { commonI18nOptions, loadPath, addPath } from './i18nCommon.js';
 // See also renderer
 
 // https://github.com/i18next/i18next/issues/869
-export default await i18n
+// CJS format (required for Electron 38 + Node 22) doesn't support top-level await.
+// i18next initializes asynchronously; index.ts imports this as a side-effect only.
+export default i18n
   .use(Backend)
   .use({ type: 'languageDetector', async: false, detect: () => app.getLocale() })
   // See also i18next.config.base.ts

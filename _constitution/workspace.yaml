@@ -42,27 +42,38 @@ model_routing:
   escalation_threshold: 0.5
   escalation_min_runs: 4
   cognitive: null
+  phase_overrides: null
+  relay_model_id: null
+  backoff: null
+  scoring: null
 default_pipeline: null
 workflows: null
-vision: |
-  The swiss army knife of lossless video/audio editing.
+smoke_tests_defaults: null
+vision: 'The swiss army knife of lossless video/audio editing.
+
   Cross-platform Electron + React + TypeScript app built on FFmpeg.
+
   Source: https://github.com/mifi/lossless-cut
+
   License: GPL-2.0
+
+  '
 state:
-  phase: idle
+  phase: executing
   health: green
-  active_item: null
+  active_item: explore-codebase
   active_neurons: {}
   last_updated: '2026-02-17T00:00:00'
   risks: []
   direction: null
   notes: null
+  lifecycle_stage: created
 queue:
 - id: explore-codebase
   title: Explore LosslessCut codebase
-  status: pending
+  status: active
   size: S
+  depends: []
   criteria:
   - text: Read README and understand project purpose
     done: false
@@ -70,12 +81,15 @@ queue:
     done: false
   - text: Identify entry points, architecture patterns, and tech stack
     done: false
-  tags: [onboarding]
+  tags:
+  - onboarding
   description: Initial codebase exploration to understand project structure, conventions,
     and key components.
   neuron_scope: null
   llm_validation: null
   pipeline: null
+  smoke_tests: null
+  model_id: null
   pr: null
   completed_date: null
   completed_summary: null
@@ -83,7 +97,8 @@ queue:
   title: Run existing test suite
   status: pending
   size: S
-  depends: [explore-codebase]
+  depends:
+  - explore-codebase
   criteria:
   - text: Identify test framework and test file locations
     done: false
@@ -91,12 +106,16 @@ queue:
     done: false
   - text: Record baseline results in TESTING.md
     done: false
-  tags: [onboarding, testing]
-  description: Establish test baseline by identifying the test framework, running the
-    suite, and recording pass/fail counts.
+  tags:
+  - onboarding
+  - testing
+  description: Establish test baseline by identifying the test framework, running
+    the suite, and recording pass/fail counts.
   neuron_scope: null
   llm_validation: null
   pipeline: null
+  smoke_tests: null
+  model_id: null
   pr: null
   completed_date: null
   completed_summary: null
@@ -104,7 +123,8 @@ queue:
   title: Assess code quality and improvement opportunities
   status: pending
   size: M
-  depends: [explore-codebase]
+  depends:
+  - explore-codebase
   criteria:
   - text: Run linter/formatter and record issues
     done: false
@@ -112,12 +132,16 @@ queue:
     done: false
   - text: Identify areas needing improvement or refactoring
     done: false
-  tags: [onboarding, quality]
+  tags:
+  - onboarding
+  - quality
   description: Evaluate code health — lint errors, outdated deps, tech debt, and improvement
     opportunities.
   neuron_scope: null
   llm_validation: null
   pipeline: null
+  smoke_tests: null
+  model_id: null
   pr: null
   completed_date: null
   completed_summary: null
