@@ -1,0 +1,16 @@
+# Enforce LF line endings for all text files (prevents Windows CRLF ESLint errors)
+* text=auto eol=lf
+
+# Binary files — no line ending conversion
+*.png binary
+*.jpg binary
+*.ico binary
+*.icns binary
+*.gif binary
+*.mp4 binary
+*.webm binary
+*.mkv binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary

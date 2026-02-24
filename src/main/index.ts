@@ -14,7 +14,7 @@ import assert from 'node:assert';
 import timers from 'node:timers/promises';
 import { z } from 'zod';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import electronUnhandled from 'electron-unhandled';
+// Dynamic import required: electron-unhandled is ESM with top-level await, can't be require()'d from CJS
 import { fileTypeFromFile } from 'file-type/node';
 import type { Asyncify } from 'type-fest';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -39,7 +39,9 @@ import * as compatPlayer from './compatPlayer.js';
 import { downloadMediaUrl } from './ffmpeg.js';
 
 
-electronUnhandled({ showDialog: true, logger: (err) => logger.error('electron-unhandled', err) });
+void import('electron-unhandled').then(({ default: electronUnhandled }) => {
+  electronUnhandled({ showDialog: true, logger: (err) => logger.error('electron-unhandled', err) });
+});
 
 // https://chromestatus.com/feature/5748496434987008
 // https://peter.sh/experiments/chromium-command-line-switches/
