@@ -14,12 +14,7 @@ modules:
 model_routing:
   tiers:
     S:
-      model_id: auto:best_local
-      context_budget: 4000
-      max_turns: 8
-      max_tool_calls: 20
-      temperature: 0.3
-      fallback_model_id: null
+      profile: auto-fast
     M:
       model_id: claude_relay:claude-opus-4-6
       context_budget: 12000
@@ -46,7 +41,7 @@ model_routing:
   relay_model_id: null
   backoff: null
   scoring: null
-default_pipeline: null
+default_pipeline: default
 workflows: null
 smoke_tests_defaults: null
 vision: 'Personal fork of LosslessCut — an AI-assisted video clip factory for gaming
@@ -64,231 +59,11 @@ state:
   health: green
   active_item: null
   active_neurons: {}
-  last_updated: '2026-02-23'
+  last_updated: '2026-02-23T00:00:00'
   risks: []
-  direction: 'Fork roadmap set. Begin with lc-restai-control-layer to prove the
-    RestAI → LosslessCut control loop end-to-end.'
+  direction: Fork roadmap set. Begin with lc-restai-control-layer to prove the RestAI
+    → LosslessCut control loop end-to-end.
   notes: 'Onboarding complete 2026-02-23. ESLint clean, 76 tests passing. Dev env
-    fixes applied (Electron 38 + VS Code CRLF/ESM). .gitattributes added. Fork
-    vision: AI clip factory for gaming/streaming VODs.'
+    fixes applied (Electron 38 + VS Code CRLF/ESM). .gitattributes added. Fork vision:
+    AI clip factory for gaming/streaming VODs.'
   lifecycle_stage: scaffolded
-queue:
-- id: lc-restai-control-layer
-  title: RestAI control layer for LosslessCut
-  status: pending
-  size: M
-  depends: []
-  criteria:
-  - text: Python service that launches LosslessCut subprocess with --http-api flag
-    done: false
-  - text: HTTP client methods for key actions (import EDL, export, close, seek)
-    done: false
-  - text: Graceful startup/shutdown with health check (poll HTTP until ready)
-    done: false
-  - text: Unit tests covering subprocess lifecycle and HTTP action dispatch
-    done: false
-  tags: [restai-integration, pipeline]
-  description: Build a Python service in the RestAI backend that can start, control,
-    and stop LosslessCut as a subprocess. Uses the existing HTTP API (POST
-    /api/action/:action) to dispatch editing commands programmatically.
-  neuron_scope: null
-  llm_validation: null
-  pipeline: null
-  smoke_tests: null
-  model_id: null
-  pr: null
-  completed_date: null
-  completed_summary: null
-- id: lc-video-intelligence-service
-  title: Video intelligence service (FFprobe + audio analysis)
-  status: pending
-  size: L
-  depends: [lc-restai-control-layer]
-  criteria:
-  - text: FFprobe metadata extraction (duration, streams, keyframes, format)
-    done: false
-  - text: Audio energy analysis via FFmpeg volumedetect filter (hype peak detection)
-    done: false
-  - text: Silence detection via FFmpeg silencedetect filter
-    done: false
-  - text: Returns structured segment candidates with timecodes and confidence scores
-    done: false
-  - text: Unit tests with real FFmpeg fixtures
-    done: false
-  tags: [restai-integration, pipeline, intelligence]
-  description: RestAI backend service that analyzes video files and returns structured
-    intelligence — metadata, audio energy peaks (hype moments), silence spans, and
-    scene candidates. This is the brain that drives AI segment generation.
-  neuron_scope: null
-  llm_validation: null
-  pipeline: null
-  smoke_tests: null
-  model_id: null
-  pr: null
-  completed_date: null
-  completed_summary: null
-- id: lc-ai-segment-generation
-  title: AI segment generation (video → EDL/CSV)
-  status: pending
-  size: M
-  depends: [lc-video-intelligence-service]
-  criteria:
-  - text: ADL agent receives video path + target clip length (TikTok/Shorts/Twitter presets)
-    done: false
-  - text: Agent calls video intelligence service and interprets hype/silence data
-    done: false
-  - text: Agent generates CSV segment file compatible with LosslessCut importEdlFile
-    done: false
-  - text: Integration test — input video → valid CSV output with correct timecodes
-    done: false
-  tags: [restai-integration, pipeline, adl]
-  description: ADL agent that takes a raw video file and produces a LosslessCut-compatible
-    EDL/CSV file. Combines video intelligence data with LLM reasoning to select
-    the best clips for gaming/streaming highlights at target platform lengths.
-  neuron_scope: null
-  llm_validation: null
-  pipeline: null
-  smoke_tests: null
-  model_id: null
-  pr: null
-  completed_date: null
-  completed_summary: null
-- id: lc-pipeline-watch-folder
-  title: Watch folder pipeline (end-to-end automation)
-  status: pending
-  size: M
-  depends: [lc-ai-segment-generation]
-  criteria:
-  - text: Watch folder service detects new video files
-    done: false
-  - text: Triggers ADL run for each new file (segment generation + export)
-    done: false
-  - text: Output clips written to configurable output directory
-    done: false
-  - text: Pipeline run summary logged to workspace run_history
-    done: false
-  tags: [restai-integration, pipeline, automation]
-  description: End-to-end automation — drop a raw stream VOD into a watch folder,
-    get highlight clips in an output folder. Full pipeline — watch, analyze,
-    AI segment plan, LosslessCut export.
-  neuron_scope: null
-  llm_validation: null
-  pipeline: null
-  smoke_tests: null
-  model_id: null
-  pr: null
-  completed_date: null
-  completed_summary: null
-- id: lc-ui-ai-panel
-  title: RestAI AI panel in LosslessCut UI
-  status: pending
-  size: L
-  depends: [lc-restai-control-layer]
-  criteria:
-  - text: New React sidebar component (AIPanel.tsx) rendered alongside SegmentList
-    done: false
-  - text: IPC channel restai-query sends current file path to main process
-    done: false
-  - text: Main process POSTs to RestAI backend and returns segment suggestions
-    done: false
-  - text: AI Transcribe button triggers local Whisper transcription via RestAI
-    done: false
-  - text: AI Smart Cut button imports AI-generated EDL into LosslessCut
-    done: false
-  tags: [restai-integration, frontend, ui]
-  description: Add a RestAI sidebar panel to LosslessCut (fork-specific feature).
-    New React component + IPC channel enables in-app AI transcription, smart cut
-    suggestions, and segment import without leaving the editor.
-  neuron_scope: null
-  llm_validation: null
-  pipeline: null
-  smoke_tests: null
-  model_id: null
-  pr: null
-  completed_date: null
-  completed_summary: null
-completed:
-- id: explore-codebase
-  title: Explore LosslessCut codebase
-  status: completed
-  size: S
-  depends: []
-  criteria:
-  - text: Read README and understand project purpose
-    done: true
-  - text: Map directory structure and identify key files
-    done: true
-  - text: Identify entry points, architecture patterns, and tech stack
-    done: true
-  tags:
-  - onboarding
-  description: Initial codebase exploration to understand project structure, conventions,
-    and key components.
-  neuron_scope: null
-  llm_validation: null
-  pipeline: null
-  smoke_tests: null
-  model_id: null
-  pr: null
-  completed_date: '2026-02-23'
-  completed_summary: Architecture mapped, HTTP API documented, dev env fixes committed,
-    test baseline identified.
-- id: run-existing-tests
-  title: Run existing test suite
-  status: completed
-  size: S
-  depends:
-  - explore-codebase
-  criteria:
-  - text: Identify test framework and test file locations
-    done: true
-  - text: Install dependencies and run test suite
-    done: true
-  - text: Record baseline results in TESTING.md
-    done: true
-  tags:
-  - onboarding
-  - testing
-  description: Establish test baseline by identifying the test framework, running
-    the suite, and recording pass/fail counts.
-  neuron_scope: null
-  llm_validation: null
-  pipeline: null
-  smoke_tests: null
-  model_id: null
-  pr: null
-  completed_date: '2026-02-23'
-  completed_summary: 76 tests passed, 0 failed, 9 files. Vitest 4.0.16. TESTING.md
-    populated with baseline.
-- id: assess-code-quality
-  title: Assess code quality and improvement opportunities
-  status: completed
-  size: M
-  depends:
-  - explore-codebase
-  criteria:
-  - text: Run linter/formatter and record issues
-    done: true
-  - text: Check for outdated dependencies
-    done: true
-  - text: Identify areas needing improvement or refactoring
-    done: true
-  tags:
-  - onboarding
-  - quality
-  description: Evaluate code health — lint errors, outdated deps, tech debt, and improvement
-    opportunities.
-  neuron_scope: null
-  llm_validation: null
-  pipeline: null
-  smoke_tests: null
-  model_id: null
-  pr: null
-  completed_date: '2026-02-23'
-  completed_summary: 'ESLint clean (0 real violations). 33 outdated packages; React 19
-    / Electron 40 deferred. App.tsx monolith + httpServer.ts coverage gaps identified
-    as key tech debt for fork work.'
-completed_ids:
-- explore-codebase
-- run-existing-tests
-- assess-code-quality

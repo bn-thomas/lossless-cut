@@ -21,6 +21,12 @@ node_modules
 /common-ts-dist
 
 tsconfig.*.tsbuildinfo
+
+# Python (backend/ service)
+__pycache__/
+*.pyc
+.pytest_cache/
+
 # Engine-managed operator state — never human work-in-progress
 _constitution/diagnostics/
 _constitution/memory.yaml

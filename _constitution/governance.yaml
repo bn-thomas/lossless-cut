@@ -3,4 +3,4 @@ policies: []
 circuit_breaker:
   enabled: true
   max_consecutive_failures: 3
-budgets: {}
+budgets: []

@@ -133,7 +133,7 @@ function createWindow() {
       nodeIntegration: true,
       // https://github.com/electron/electron/issues/5107
       webSecurity: !isDev,
-      preload: fileURLToPath(new URL('../preload/index.cjs', import.meta.url)),
+      preload: fileURLToPath(new URL('../preload/index.mjs', import.meta.url)),
     },
     backgroundColor: darkMode ? '#333' : '#fff',
     minWidth: 300,
