@@ -21,3 +21,7 @@ node_modules
 /common-ts-dist
 
 tsconfig.*.tsbuildinfo
+# Engine-managed operator state — never human work-in-progress
+_constitution/diagnostics/
+_constitution/memory.yaml
+_constitution/patterns/
