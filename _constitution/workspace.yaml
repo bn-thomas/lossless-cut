@@ -15,7 +15,14 @@ model_routing:
   tiers:
     S:
       profile: auto-fast
+      model_id: null
+      context_budget: 8000
+      max_turns: 12
+      max_tool_calls: 30
+      temperature: 0.3
+      fallback_model_id: null
     M:
+      profile: null
       model_id: claude_relay:claude-opus-4-6
       context_budget: 12000
       max_turns: 16
@@ -23,6 +30,7 @@ model_routing:
       temperature: 0.3
       fallback_model_id: auto:best_local
     L:
+      profile: null
       model_id: claude_relay:claude-opus-4-6
       context_budget: 16000
       max_turns: 20
@@ -56,7 +64,7 @@ brief: 'AI-assisted video clip factory for gaming/streaming. Onboarding complete
   Next: build RestAI control layer to drive LosslessCut via subprocess + HTTP API.'
 state:
   phase: idle
-  health: green
+  health: yellow
   active_item: null
   active_neurons: {}
   last_updated: '2026-02-23T00:00:00'
@@ -67,3 +75,6 @@ state:
     fixes applied (Electron 38 + VS Code CRLF/ESM). .gitattributes added. Fork vision:
     AI clip factory for gaming/streaming VODs.'
   lifecycle_stage: scaffolded
+queue: []
+completed: []
+completed_ids: []
