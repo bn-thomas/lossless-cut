@@ -328,8 +328,11 @@ def write_llc_sidecar(segments: list[Segment], video_path) -> Path:
 
 def _fmt_seconds(value: float) -> str:
     # Plain decimal seconds, no scientific notation; trim trailing zeros the
-    # same way String(Number) does for round values.
-    text = f"{value:.6f}".rstrip("0").rstrip(".")
+    # same way String(Number) does for round values. Clamped to millisecond
+    # precision because upstream's parseTime regex (edlFormats.ts) only
+    # consumes 1-3 fractional digits — extra digits would be silently
+    # truncated on import, so emit exactly what round-trips.
+    text = f"{value:.3f}".rstrip("0").rstrip(".")
     return text or "0"
 
 

@@ -295,6 +295,12 @@ class TestEdlFormats:
         csv_text = format_edl_csv([Segment(0, 5, name="a, b")])
         assert '"a, b"' in csv_text
 
+    def test_csv_clamps_to_millisecond_precision(self):
+        # Upstream parseTime (edlFormats.ts) only consumes 1-3 fractional
+        # digits, so emitting more would be silently truncated on import.
+        csv_text = format_edl_csv([Segment(start=1.2345678, end=2.0000004, name="x")])
+        assert csv_text.strip().split("\n")[1] == "1.235,2,x"
+
     def test_write_edl_csv(self, tmp_path):
         out = write_edl_csv(self.SEGMENTS, tmp_path / "vod.edl.csv")
         assert out.read_text(encoding="utf-8").startswith("Start,End,Name")

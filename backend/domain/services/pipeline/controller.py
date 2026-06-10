@@ -18,6 +18,19 @@ EDL delivery strategies
     NOTE: upstream's importEdlFile action opens a file-picker dialog (it takes
     an EdlImportType, not a path), so this strategy only works against a
     patched build that accepts a direct path. Kept as an explicit opt-in seam.
+
+Headless export caveats (upstream behavior, verified in src/renderer/src):
+  - ``exportConfirmEnabled`` defaults to true (src/main/configStore.ts), in
+    which case the first ``export`` action only opens the export-confirm
+    dialog; a second ``export`` (or the setting disabled in config) is needed
+    to actually start the export. Disable export confirmation in LosslessCut's
+    settings before running this pipeline unattended.
+  - Main actions dispatched over HTTP are fire-and-forget in App.tsx
+    (``async () => { fn(); }`` — not awaited), so an ``ok`` response means the
+    export *started*, not that it finished. Exported clips are written to the
+    source file's directory unless a custom working dir is set — point
+    LosslessCut's working dir outside the watch folder so finished clips are
+    not re-discovered as new inputs.
 """
 
 import logging
