@@ -8,13 +8,12 @@ Covers:
 """
 
 import subprocess
-from unittest.mock import MagicMock, patch, PropertyMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 import requests
 
 from backend.domain.services.losslesscut_service import LosslessCutService
-
 
 # ── Fixtures ──────────────────────────────────────────────────────
 
@@ -280,7 +279,7 @@ class TestStop:
         # kill's wait succeeds
         proc.wait.side_effect = [
             subprocess.TimeoutExpired(cmd="LosslessCut", timeout=10),  # after terminate()
-            0,                                                          # after kill()
+            0,  # after kill()
         ]
 
         result = running_service.stop()
@@ -382,7 +381,8 @@ class TestActionMethods:
     def test_open_files(self, mock_action, running_service):
         result = running_service.open_files(["/tmp/a.mp4", "/tmp/b.mkv"])
 
-        mock_action.assert_called_once_with("openFiles", {"paths": ["/tmp/a.mp4", "/tmp/b.mkv"]}, timeout=30)
+        # Upstream openFilesActionArgsSchema expects a bare JSON array body.
+        mock_action.assert_called_once_with("openFiles", ["/tmp/a.mp4", "/tmp/b.mkv"], timeout=30)
         assert result == {"status": "ok"}
 
     @patch.object(LosslessCutService, "_post_action", return_value={"status": "ok"})
