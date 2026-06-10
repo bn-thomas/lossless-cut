@@ -176,7 +176,7 @@ class LosslessCutService:
 
     # ── HTTP action dispatch ──────────────────────────────────────
 
-    def _post_action(self, action: str, body: Optional[dict] = None, timeout: float = 10) -> dict:
+    def _post_action(self, action: str, body: object = None, timeout: float = 10) -> dict:
         """Send POST /api/action/:action.
 
         Returns:
@@ -223,8 +223,14 @@ class LosslessCutService:
         return self._post_action("goToTimecodeDirect", {"time": timecode})
 
     def open_files(self, paths: list[str]) -> dict:
-        """Open files in the running instance (POST /api/action/openFiles)."""
-        return self._post_action("openFiles", {"paths": paths}, timeout=30)
+        """Open files in the running instance (POST /api/action/openFiles).
+
+        Note: the upstream action schema (``openFilesActionArgsSchema`` in
+        src/renderer/src/types.ts) is ``z.tuple([z.string().array()])`` and
+        the HTTP server passes the JSON body as the single tuple element, so
+        the body must be a bare JSON array of paths — not an object.
+        """
+        return self._post_action("openFiles", paths, timeout=30)
 
     def send_action(self, action: str, params: Optional[dict] = None, timeout: float = 10) -> dict:
         """Send an arbitrary keyboard action.
