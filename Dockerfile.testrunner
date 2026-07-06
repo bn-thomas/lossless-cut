@@ -1,0 +1,13 @@
+# ADL delegated-verify test runner for lossless-cut's Python pipeline layer.
+#
+# The adl-worker image lacks this workspace's deps, so the engine's
+# test_runner interface execs pytest in THIS container against the run's
+# worktree (mounted read-only at /worktrees by compose). The pipeline tests
+# are fully mocked -- no ffmpeg, no video files, no Electron toolchain.
+FROM python:3.11-slim
+
+RUN pip install --no-cache-dir pytest httpx requests
+
+# Idle service: the engine execs `python -m pytest <paths>` with the workdir
+# set to the run's worktree; the container itself serves nothing.
+CMD ["sleep", "infinity"]
